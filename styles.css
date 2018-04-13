@@ -24,5 +24,14 @@ table {
     margin-bottom: 25px;
     background-color: lightBlue;
     border: solid 2px black;
-    box-shadow: 5px;
+    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+}
+
+.card {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+    margin: 7.5px;
+    background-color: pink;
+    box-shadow: 3px 3px 10px 0 rgba(46, 61, 73, 0.5);
 }
