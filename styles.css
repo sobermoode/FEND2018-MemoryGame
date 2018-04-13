@@ -52,12 +52,18 @@ tr {
     height: 25%;
 }
 
-.card {
+.cardCell {
     width: 25%;
     display: flex;
     margin: 7.5px;
     background-color: pink;
     box-shadow: 3px 3px 10px 0 rgba(46, 61, 73, 0.5);
+}
+
+.card  {
+    width: 96px;
+    height: 96px;
+    margin: auto;
 }
 
 #id {
