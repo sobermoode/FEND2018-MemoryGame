@@ -1,11 +1,12 @@
-body {
+body, html {
     width: 100%;
     height: 100%;
+    display: flex;
     background-color: lightGray;
 }
 
 main {
-    width: 50%;
+    width: 70%;
     height: 100%;
     background-color: lightGreen;
     margin: auto;
@@ -17,11 +18,12 @@ main {
 }
 
 table {
-    width: 90%;
-    height: 100%;
+    width: 95%;
+    height: 70%;
     margin: auto;
     margin-top: 25px;
     margin-bottom: 25px;
+    position: relative;
     background-color: lightBlue;
     border: solid 2px black;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
@@ -29,11 +31,11 @@ table {
 
 tr {
     display: flex;
+    height: 25%;
 }
 
 .card {
     width: 25%;
-    height: 100px;
     display: inline-block;
     margin: 7.5px;
     background-color: pink;
