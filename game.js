@@ -1,7 +1,7 @@
 const cardNames = ['face', 'face', 'bug_report', 'bug_report', 'motorcycle', 'motorcycle', 'radio', 'radio', 'toys', 'toys', 'videogame_asset', 'videogame_asset', 'brightness_5', 'brightness_5', 'looks', 'looks'];
 
 const deck = shuffleCards(cardNames);
-
+placeCards(deck);
 
 function shuffleCards(cards) {
     let currentIndex = cards.length;
@@ -23,16 +23,29 @@ function shuffleCards(cards) {
     return cards;
 }
 
+/* NOTE: use a document fragment here, to avoid tons of reflows and repaints!!! */
 function placeCards(cards) {
     const table = document.getElementById('cardTable');
+    const rows = table.rows;
+
     let cardIndex = 0;
+    for (row of rows) {
+        const cells = row.cells;
 
-    for (const td of table.cells) {
-        td.
+        for (cell of cells) {
+            const cardDiv = cell.querySelector('.card');
+            const newI = document.createElement('i');
+            newI.setAttribute('class', 'material-icons md-96');
+            newI.textContent = cards[cardIndex++];
+            cardDiv.appendChild(newI);
+        }
     }
-    for (const card of cards) {
 
-    }
+    // for (const td of table.cells) {
+    //     const cardDiv = td.querySelector('card');
+    //     const newI = document.createElement('i');
+    //     newI.addAttribute('material-icons md-96');
+    //     newI.textContent = cards[cardIndex++];
+    //     cardDiv.appendChild(newI);
+    // }
 }
-
-console.log(deck);
