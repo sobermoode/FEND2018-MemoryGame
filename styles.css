@@ -27,8 +27,12 @@ table {
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
+tr {
+    display: flex;
+}
+
 .card {
-    width: 100px;
+    width: 25%;
     height: 100px;
     display: inline-block;
     margin: 7.5px;
