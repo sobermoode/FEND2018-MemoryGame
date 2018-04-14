@@ -35,25 +35,15 @@ function placeCards(cards) {
         const cells = row.cells;
 
         for (cell of cells) {
-            const cardDiv = cell.querySelector('.card');
             const newI = document.createElement('i');
             newI.setAttribute('class', 'material-icons md-96');
-            //newI.classList.toggle('icon', cards[cardIndex++]);
-            //newI.setAttribute('background-color', 'pink');
-            //newI.textContent = cards[cardIndex++];
             newI.setAttribute('icon', cards[cardIndex++]);
             newI.style.backgroundColor = 'pink';
+
+            const cardDiv = cell.querySelector('.card');
             cardDiv.appendChild(newI);
         }
     }
-
-    // for (const td of table.cells) {
-    //     const cardDiv = td.querySelector('card');
-    //     const newI = document.createElement('i');
-    //     newI.addAttribute('material-icons md-96');
-    //     newI.textContent = cards[cardIndex++];
-    //     cardDiv.appendChild(newI);
-    // }
 }
 
 function logCardIcons() {
@@ -69,10 +59,6 @@ function logCardIcons() {
             const i = cardDiv.querySelector('i');
             console.log(i);
             const icon = i.getAttribute('icon');
-            // const icon = cardDiv.classList['icon'];
-            // if (icon.classList.contains('icon')) {
-            //     console.log();
-            // }
             console.log(icon);
         }
     }
