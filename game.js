@@ -12,6 +12,8 @@ placeCards(deck);
 const cardTable = document.querySelector('#cardTable');
 cardTable.addEventListener('click', function(event) {
     console.log(event.target);
+    const icon = event.target.querySelector('i');
+    icon.textContent = icon.getAttribute('icon');
 });
 
 /* NOTE: code promoted from https://stackoverflow.com/a/2450976 */
