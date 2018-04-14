@@ -54,6 +54,14 @@ function placeCards(cards) {
             // add the material icon to the cell
             const cardDiv = cell.querySelector('.card');
             cardDiv.appendChild(newI);
+
+            // attach an event handler to the cell
+            cell.addEventListener('click', function(event) {
+                const targetCell = event.target;
+                const card = targetCell.querySelector('i');
+                const icon = card.getAttribute('icon');
+                console.log(icon);
+            });
         }
     }
 }
