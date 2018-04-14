@@ -1,7 +1,9 @@
 const cardNames = ['face', 'face', 'bug_report', 'bug_report', 'motorcycle', 'motorcycle', 'radio', 'radio', 'toys', 'toys', 'videogame_asset', 'videogame_asset', 'brightness_5', 'brightness_5', 'looks', 'looks'];
+let currentBoard;
 
 const deck = shuffleCards(cardNames);
 placeCards(deck);
+logCardIcons();
 
 function shuffleCards(cards) {
     let currentIndex = cards.length;
@@ -36,7 +38,11 @@ function placeCards(cards) {
             const cardDiv = cell.querySelector('.card');
             const newI = document.createElement('i');
             newI.setAttribute('class', 'material-icons md-96');
-            newI.textContent = cards[cardIndex++];
+            //newI.classList.toggle('icon', cards[cardIndex++]);
+            //newI.setAttribute('background-color', 'pink');
+            //newI.textContent = cards[cardIndex++];
+            newI.setAttribute('icon', cards[cardIndex++]);
+            newI.style.backgroundColor = 'pink';
             cardDiv.appendChild(newI);
         }
     }
@@ -48,4 +54,26 @@ function placeCards(cards) {
     //     newI.textContent = cards[cardIndex++];
     //     cardDiv.appendChild(newI);
     // }
+}
+
+function logCardIcons() {
+    const table = document.getElementById('cardTable');
+    const rows = table.rows;
+
+    let cardIndex = 0;
+    for (row of rows) {
+        const cells = row.cells;
+
+        for (cell of cells) {
+            const cardDiv = cell.querySelector('.card');
+            const i = cardDiv.querySelector('i');
+            console.log(i);
+            const icon = i.getAttribute('icon');
+            // const icon = cardDiv.classList['icon'];
+            // if (icon.classList.contains('icon')) {
+            //     console.log();
+            // }
+            console.log(icon);
+        }
+    }
 }
