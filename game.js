@@ -3,7 +3,7 @@ const cardNames = ['face', 'face', 'bug_report', 'bug_report', 'motorcycle', 'mo
 
 // the state of the cards currently on the board
 // (all active to start)
-let currentBoard = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ];
+let currentBoard = [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true ];
 let firstTurn = true;
 let firstChoice;
 let totalTurns = 0;
@@ -21,24 +21,27 @@ cardTable.addEventListener('click', function(event) {
     const icon = event.target.querySelector('i');
 
     // get the cell number
-    const cellIndex = icon.getAttribute('id');
+    const cellIndex = Number(icon.getAttribute('id'));
+    console.log(cellIndex);
 
     // if cell is inactive, do nothing
-    const isInactive = currentBoard[cellIndex] === 0;
-    if (isInactive) {
+    //const isInactive = (currentBoard[cellIndex] === 0);
+    if (currentBoard[cellIndex] === false) {
+        console.log('returning...');
         return;
     }
+
+    console.log('not returning...');
 
     // make the icon appear by setting the textContent of it's
     // <i> element to the icon name (in attribute 'icon').
     icon.textContent = icon.getAttribute('icon');
 
     // this table cell is now inactive
-    currentBoard[cellIndex] = 0;
+    currentBoard[cellIndex] = false;
 
     if (firstTurn) {    // on first turn, remember the choice
         firstChoice = icon.getAttribute('icon');
-        firstTurn = !firstTurn;
     } else {            // on second turn, see if there's a match
         if (firstChoice === icon.getAttribute('icon')) {
             matchCards();
@@ -48,6 +51,9 @@ cardTable.addEventListener('click', function(event) {
     }
 
     totalTurns++;
+    firstTurn = !firstTurn;
+
+    console.log(currentBoard);
 });
 
 function matchCards() {
@@ -96,7 +102,10 @@ function placeCards(cards) {
         for (cell of cells) {
 
             // ID each cell
-            cell.setAttribute('id', `${cardIndex}`);
+            const cellID = String(cardIndex);
+            console.log("cellID: ", cellID);
+            //cell.setAttribute('id', cellID);
+            console.log(cell.cellIndex);
 
             // create the material icon (requires an <i> element)
             const newI = document.createElement('i');
