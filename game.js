@@ -7,7 +7,12 @@ let currentBoard;
 // shuffle the cards and deal out the board
 const deck = shuffleCards(cardNames);
 placeCards(deck);
-logCardIcons();
+
+// one event handler for the whole table
+const cardTable = document.querySelector('#cardTable');
+cardTable.addEventListener('click', function(event) {
+    console.log(event.target);
+});
 
 /* NOTE: code promoted from https://stackoverflow.com/a/2450976 */
 function shuffleCards(cards) {
@@ -54,33 +59,6 @@ function placeCards(cards) {
             // add the material icon to the cell
             const cardDiv = cell.querySelector('.card');
             cardDiv.appendChild(newI);
-
-            // attach an event handler to the cell
-            cell.addEventListener('click', function(event) {
-                const targetCell = event.target;
-                const card = targetCell.querySelector('i');
-                const icon = card.getAttribute('icon');
-                console.log(icon);
-            });
-        }
-    }
-}
-
-// test function
-function logCardIcons() {
-    const table = document.getElementById('cardTable');
-    const rows = table.rows;
-
-    let cardIndex = 0;
-    for (row of rows) {
-        const cells = row.cells;
-
-        for (cell of cells) {
-            const cardDiv = cell.querySelector('.card');
-            const i = cardDiv.querySelector('i');
-            console.log(i);
-            const icon = i.getAttribute('icon');
-            console.log(icon);
         }
     }
 }
