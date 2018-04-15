@@ -15,45 +15,37 @@ placeCards(deck);
 // one event handler for the whole table
 const cardTable = document.querySelector('#cardTable');
 cardTable.addEventListener('click', function(event) {
-    console.log(event.target);
+
+    // get the ID (currentBoard[] index) of the cell
+    const targetID = event.target.getAttribute('id');
+
+    // if cell is inactive, do nothing
+    const isInactive = (currentBoard[targetID] === false);
+    if (isInactive) { return; }
 
     // get the element holding the icon
     const icon = event.target.querySelector('i');
-
-    // get the cell number
-    const cellIndex = Number(icon.getAttribute('id'));
-    console.log(cellIndex);
-
-    // if cell is inactive, do nothing
-    //const isInactive = (currentBoard[cellIndex] === 0);
-    if (currentBoard[cellIndex] === false) {
-        console.log('returning...');
-        return;
-    }
-
-    console.log('not returning...');
 
     // make the icon appear by setting the textContent of it's
     // <i> element to the icon name (in attribute 'icon').
     icon.textContent = icon.getAttribute('icon');
 
     // this table cell is now inactive
-    currentBoard[cellIndex] = false;
+    currentBoard[targetID] = false;
 
     if (firstTurn) {    // on first turn, remember the choice
         firstChoice = icon.getAttribute('icon');
     } else {            // on second turn, see if there's a match
         if (firstChoice === icon.getAttribute('icon')) {
-            matchCards();
+            matchCards();       // MATCH!!!
         } else {
-            revertCards();
+            revertCards();      // nope...
         }
     }
 
+    // next turn, first choice
     totalTurns++;
     firstTurn = !firstTurn;
-
-    console.log(currentBoard);
 });
 
 function matchCards() {
@@ -94,7 +86,7 @@ function placeCards(cards) {
     const rows = table.rows;
 
     // for every row...
-    let cardIndex = 0;
+    let rowCounter = 0;
     for (row of rows) {
         const cells = row.cells;
 
@@ -102,23 +94,25 @@ function placeCards(cards) {
         for (cell of cells) {
 
             // ID each cell
-            const cellID = String(cardIndex);
-            console.log("cellID: ", cellID);
-            //cell.setAttribute('id', cellID);
-            console.log(cell.cellIndex);
+            const cellID = cell.cellIndex + rowCounter * row.cells.length;
+            cell.setAttribute('id', cellID);
 
             // create the material icon (requires an <i> element)
             const newI = document.createElement('i');
             newI.setAttribute('class', 'material-icons md-96');
+            newI.setAttribute('id', cellID);
 
             // add the card name for retrieval later
-            newI.setAttribute('icon', cards[cardIndex++]);
+            newI.setAttribute('icon', cards[cellID]);
 
             newI.style.backgroundColor = 'pink';
 
             // add the material icon to the cell
             const cardDiv = cell.querySelector('.card');
+            cardDiv.setAttribute('id', cellID);
             cardDiv.appendChild(newI);
         }
+
+        rowCounter++;
     }
 }
