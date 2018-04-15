@@ -5,7 +5,8 @@ const cardNames = ['face', 'face', 'bug_report', 'bug_report', 'motorcycle', 'mo
 // (all active to start)
 let currentBoard = [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true ];
 let firstTurn = true;
-let firstChoice;
+let firstID, secondID;
+let firstChoice, secondChoice;
 let totalTurns = 0;
 
 // shuffle the cards and deal out the board
@@ -18,6 +19,12 @@ cardTable.addEventListener('click', function(event) {
 
     // get the ID (currentBoard[] index) of the cell
     const targetID = event.target.getAttribute('id');
+
+    if (firstTurn) {
+        firstID = targetID;
+    } else {
+        secondID = targetID;
+    }
 
     // if cell is inactive, do nothing
     const isInactive = (currentBoard[targetID] === false);
@@ -34,9 +41,11 @@ cardTable.addEventListener('click', function(event) {
     currentBoard[targetID] = false;
 
     if (firstTurn) {    // on first turn, remember the choice
-        firstChoice = icon.getAttribute('icon');
+        firstChoice = icon;
     } else {            // on second turn, see if there's a match
-        if (firstChoice === icon.getAttribute('icon')) {
+        secondChoice = icon;
+
+        if (firstChoice.getAttribute('icon') === icon.getAttribute('icon')) {
             matchCards();       // MATCH!!!
         } else {
             revertCards();      // nope...
@@ -49,11 +58,29 @@ cardTable.addEventListener('click', function(event) {
 });
 
 function matchCards() {
-    console.log('MATCH!!!');
+    //console.log('MATCH!!!');
+    /* NOTE: code promoted from https://stackoverflow.com/questions/2151084/map-a-2d-array-onto-a-1d-array#comment65016851_2151141 */
+    let size = cardTable.rows.length;
+    let x = firstID % size;
+    let y = (firstID - firstID % size) / size;
+
+    let cell = cardTable.rows[x].cells[y];
+    cell.style.backgroundColor = 'lightGreen';
+
+    x = secondID % size;
+    y = (secondID - secondID % size) / size;
+
+    cell = cardTable.rows[x].cells[y];
+    cell.style.backgroundColor = 'lightGreen';
 }
 
 function revertCards() {
-    console.log('nope...');
+    //console.log('nope...');
+    firstChoice.textContent = '';
+    currentBoard[firstID] = true;
+
+    secondChoice.textContent = '';
+    currentBoard[secondID] = true;
 }
 
 function win() {
@@ -67,6 +94,7 @@ function shuffleCards(cards) {
 
     // while there remain elements to shuffle...
     while (currentIndex !== 0) {
+        
         // Pick a remaining element...
         randoIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
@@ -94,6 +122,7 @@ function placeCards(cards) {
         for (cell of cells) {
 
             // ID each cell
+            /* NOTE: code promoted from https://stackoverflow.com/a/2151141 */
             const cellID = cell.cellIndex + rowCounter * row.cells.length;
             cell.setAttribute('id', cellID);
 
