@@ -58,7 +58,6 @@ cardTable.addEventListener('click', function(event) {
 });
 
 function matchCards() {
-    //console.log('MATCH!!!');
     /* NOTE: code promoted from https://stackoverflow.com/questions/2151084/map-a-2d-array-onto-a-1d-array#comment65016851_2151141 */
     let size = cardTable.rows.length;
     let x = firstID % size;
@@ -66,16 +65,17 @@ function matchCards() {
 
     let cell = cardTable.rows[x].cells[y];
     cell.style.backgroundColor = 'lightGreen';
+    cell.querySelector('i').style.backgroundColor = 'lightGreen';
 
     x = secondID % size;
     y = (secondID - secondID % size) / size;
 
     cell = cardTable.rows[x].cells[y];
     cell.style.backgroundColor = 'lightGreen';
+    cell.querySelector('i').style.backgroundColor = 'lightGreen';
 }
 
 function revertCards() {
-    //console.log('nope...');
     firstChoice.textContent = '';
     currentBoard[firstID] = true;
 
@@ -94,7 +94,7 @@ function shuffleCards(cards) {
 
     // while there remain elements to shuffle...
     while (currentIndex !== 0) {
-        
+
         // Pick a remaining element...
         randoIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
