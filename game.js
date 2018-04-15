@@ -46,8 +46,10 @@ cardTable.addEventListener('click', function(event) {
         secondChoice = icon;
 
         if (firstChoice.getAttribute('icon') === icon.getAttribute('icon')) {
+            console.log(`firstID: ${firstID}, secondID: ${secondID}`);
             matchCards();       // MATCH!!!
         } else {
+            console.log(`firstID: ${firstID}, secondID: ${secondID}`);
             revertCards();      // nope...
         }
     }
@@ -58,29 +60,63 @@ cardTable.addEventListener('click', function(event) {
 });
 
 function matchCards() {
+    console.log(`firstID: ${firstID}, secondID: ${secondID}`);
     /* NOTE: code promoted from https://stackoverflow.com/questions/2151084/map-a-2d-array-onto-a-1d-array#comment65016851_2151141 */
     let size = cardTable.rows.length;
     let x = firstID % size;
     let y = (firstID - firstID % size) / size;
 
-    let cell = cardTable.rows[x].cells[y];
+    let cell = cardTable.rows[y].cells[x];
     cell.style.backgroundColor = 'lightGreen';
     cell.querySelector('i').style.backgroundColor = 'lightGreen';
 
     x = secondID % size;
     y = (secondID - secondID % size) / size;
 
-    cell = cardTable.rows[x].cells[y];
+    cell = cardTable.rows[y].cells[x];
     cell.style.backgroundColor = 'lightGreen';
     cell.querySelector('i').style.backgroundColor = 'lightGreen';
 }
 
 function revertCards() {
-    firstChoice.textContent = '';
-    currentBoard[firstID] = true;
+    console.log(`firstID: ${firstID}, secondID: ${secondID}`);
+    let size = cardTable.rows.length;
+    let x = firstID % size;
+    let y = (firstID - firstID % size) / size;
 
-    secondChoice.textContent = '';
-    currentBoard[secondID] = true;
+    let cell = cardTable.rows[y].cells[x];
+    cell.style.backgroundColor = 'red';
+    cell.querySelector('i').style.backgroundColor = 'red';
+
+    x = secondID % size;
+    y = (secondID - secondID % size) / size;
+
+    cell = cardTable.rows[y].cells[x];
+    cell.style.backgroundColor = 'red';
+    cell.querySelector('i').style.backgroundColor = 'red';
+
+    setTimeout(function() {
+        firstChoice.textContent = '';
+        currentBoard[firstID] = true;
+
+        secondChoice.textContent = '';
+        currentBoard[secondID] = true;
+
+        size = cardTable.rows.length;
+        x = firstID % size;
+        y = (firstID - firstID % size) / size;
+
+        cell = cardTable.rows[y].cells[x];
+        cell.style.backgroundColor = 'pink';
+        cell.querySelector('i').style.backgroundColor = 'pink';
+
+        x = secondID % size;
+        y = (secondID - secondID % size) / size;
+
+        cell = cardTable.rows[y].cells[x];
+        cell.style.backgroundColor = 'pink';
+        cell.querySelector('i').style.backgroundColor = 'pink';
+    }, 500);
 }
 
 function win() {
