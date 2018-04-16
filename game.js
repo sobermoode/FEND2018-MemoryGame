@@ -26,8 +26,10 @@ cardTable.addEventListener('click', function(event) {
         return;
     }
 
-    // get the ID (currentBoard[] index) of the cell
+    // get the ID (currentBoard[] index) of the cell,
+    // if any part of the table besides a card cell is clicked, do nothing
     const targetID = event.target.getAttribute('id');
+    if (!targetID) { return; }
 
     if (firstTurn) {
         firstID = targetID;
