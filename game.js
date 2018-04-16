@@ -4,10 +4,14 @@ const cardNames = ['face', 'face', 'bug_report', 'bug_report', 'motorcycle', 'mo
 // the state of the cards currently on the board
 // (all active to start)
 let currentBoard = [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true ];
+
 let firstTurn = true;
 let firstID, secondID;
 let firstChoice, secondChoice;
 let totalTurns = 0;
+
+// disable clicks on the table while cards are being reverted
+let cardTableIsInactive = false;
 
 // shuffle the cards and deal out the board
 const deck = shuffleCards(cardNames);
@@ -16,6 +20,11 @@ placeCards(deck);
 // one event handler for the whole table
 const cardTable = document.querySelector('#cardTable');
 cardTable.addEventListener('click', function(event) {
+
+    // do nothing if the user clicks the table while current cards are reverted
+    if (cardTableIsInactive) {
+        return;
+    }
 
     // get the ID (currentBoard[] index) of the cell
     const targetID = event.target.getAttribute('id');
@@ -60,7 +69,7 @@ cardTable.addEventListener('click', function(event) {
 });
 
 function matchCards() {
-    console.log(`firstID: ${firstID}, secondID: ${secondID}`);
+
     /* NOTE: code promoted from https://stackoverflow.com/questions/2151084/map-a-2d-array-onto-a-1d-array#comment65016851_2151141 */
     let size = cardTable.rows.length;
     let x = firstID % size;
@@ -79,7 +88,10 @@ function matchCards() {
 }
 
 function revertCards() {
-    console.log(`firstID: ${firstID}, secondID: ${secondID}`);
+
+    // prevent the card table from performing anything on a click event
+    cardTableIsInactive = true;
+
     let size = cardTable.rows.length;
     let x = firstID % size;
     let y = (firstID - firstID % size) / size;
@@ -116,6 +128,9 @@ function revertCards() {
         cell = cardTable.rows[y].cells[x];
         cell.style.backgroundColor = 'pink';
         cell.querySelector('i').style.backgroundColor = 'pink';
+
+        // make the card table active again
+        cardTableIsInactive = false;
     }, 500);
 }
 

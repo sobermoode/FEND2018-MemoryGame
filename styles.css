@@ -8,7 +8,7 @@ body, html {
 main {
     width: 70%;
     height: 100%;
-    background-color: lightGreen;
+    /* background-color: yellow; */
     margin: auto;
     font-size: 18px;
 }
