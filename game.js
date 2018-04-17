@@ -8,7 +8,7 @@ let currentBoard = [ true, true, true, true, true, true, true, true, true, true,
 let firstTurn = true;
 let firstID, secondID;
 let firstChoice, secondChoice;
-let maxMatches = 1, totalMatches = 0, totalTurns = 0;
+let maxMatches = cardNames.length / 2, totalMatches = 0, totalTurns = 0;
 
 // disable clicks on the table while cards are being reverted
 let cardTableIsInactive = false;
