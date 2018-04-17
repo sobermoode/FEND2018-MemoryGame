@@ -13,6 +13,11 @@ let maxMatches = cardNames.length / 2, totalMatches = 0, totalTurns = 0;
 // disable clicks on the table while cards are being reverted
 let cardTableIsInactive = false;
 
+// timer
+let didStart = false;
+const timer = document.querySelector('#timer');
+let elapsedSeconds = 0;
+
 // shuffle the cards and deal out the board
 const deck = shuffleCards(cardNames);
 placeCards(deck);
@@ -54,6 +59,15 @@ cardTable.addEventListener('click', function(event) {
     if (firstTurn) {    // on first turn, remember the choice
         firstChoice = icon;
     } else {
+
+        // start the timer (if not already started)
+        if (!didStart) {
+            didStart = !didStart;
+            const updateTimer = setInterval(function() {
+                timer.textContent = ++elapsedSeconds;
+            }, 1000);
+        }
+
         secondChoice = icon;    // second selection
 
         // +1 turn
