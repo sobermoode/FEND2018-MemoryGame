@@ -34,6 +34,11 @@ main {
     margin: auto;
     text-align: center;
     background-color: green;
+    border: 1px solid white;
+}
+
+#moveCounter {
+    color: yellow;
 }
 
 table {
