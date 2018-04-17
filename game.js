@@ -8,7 +8,7 @@ let currentBoard = [ true, true, true, true, true, true, true, true, true, true,
 let firstTurn = true;
 let firstID, secondID;
 let firstChoice, secondChoice;
-let totalTurns = 0;
+let maxMatches = 1, totalMatches = 0, totalTurns = 0;
 
 // disable clicks on the table while cards are being reverted
 let cardTableIsInactive = false;
@@ -57,7 +57,11 @@ cardTable.addEventListener('click', function(event) {
         secondChoice = icon;
 
         if (firstChoice.getAttribute('icon') === icon.getAttribute('icon')) {
-            matchCards();       // MATCH!!!
+            matchCards();       // match!!!
+
+            if (++totalMatches === maxMatches) {    // WINNER!!!
+                setTimeout(win(), 500);
+            }
         } else {
             revertCards();      // nope...
         }
@@ -127,7 +131,18 @@ function revertCards() {
 }
 
 function win() {
-    console.log('WIN!!!');
+
+    // all the cards turn blue as a visual indicator
+    for (row of cardTable.rows) {
+        for (cell of row.cells) {
+            cell.style.backgroundColor = 'lightBlue';
+            cell.querySelector('i').textContent = '';
+        }
+    }
+
+    // pop up the win modal
+    const modal = document.querySelector('#winModal');
+    modal.style.zIndex = 1;
 }
 
 /* NOTE: code promoted from https://stackoverflow.com/a/2450976 */
