@@ -53,8 +53,11 @@ cardTable.addEventListener('click', function(event) {
 
     if (firstTurn) {    // on first turn, remember the choice
         firstChoice = icon;
-    } else {            // on second turn, see if there's a match
-        secondChoice = icon;
+    } else {
+        secondChoice = icon;    // second selection
+
+        // +1 turn
+        updateTurnCounter(++totalTurns);
 
         if (firstChoice.getAttribute('icon') === icon.getAttribute('icon')) {
             matchCards();       // match!!!
@@ -67,10 +70,14 @@ cardTable.addEventListener('click', function(event) {
         }
     }
 
-    // next turn, first choice
-    totalTurns++;
+    // back to the first selection of the next turn
     firstTurn = !firstTurn;
 });
+
+function updateTurnCounter(turns) {
+    const counter = document.querySelector('#moveCounter');
+    counter.textContent = totalTurns;
+}
 
 /* NOTE: code promoted from https://stackoverflow.com/questions/2151084/map-a-2d-array-onto-a-1d-array#comment65016851_2151141 */
 function cardTablePositionForCardID(id) {
