@@ -15,8 +15,19 @@ let cardTableIsInactive = false;
 
 // timer
 let didStart = false;
-const timer = document.querySelector('#timer');
+const minutes = document.getElementById('minutes');
+const seconds = document.getElementById('seconds');
 let elapsedSeconds = 0;
+
+/* NOTE: code promoted from https://stackoverflow.com/a/5517836 */
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+      return "0" + valString;
+  } else {
+      return valString;
+  }
+}
 
 // shuffle the cards and deal out the board
 const deck = shuffleCards(cardNames);
@@ -64,7 +75,8 @@ cardTable.addEventListener('click', function(event) {
         if (!didStart) {
             didStart = !didStart;
             const updateTimer = setInterval(function() {
-                timer.textContent = ++elapsedSeconds;
+                seconds.textContent = pad(++elapsedSeconds % 60);
+                minutes.textContent = parseInt(elapsedSeconds / 60);
             }, 1000);
         }
 
