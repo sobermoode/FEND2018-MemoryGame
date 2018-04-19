@@ -9,7 +9,6 @@ body, html {
 main {
     width: 70%;
     height: 100%;
-    /* background-color: yellow; */
     margin: auto;
     font-size: 18px;
 }
@@ -23,7 +22,6 @@ main {
     height: 50px;
     margin: auto;
     display: flex;
-    background-color: inherit;
     color: white;
     font-size: 1.5em;
 }
@@ -34,7 +32,6 @@ main {
     margin: auto;
     text-align: center;
     background-color: green;
-    border: 1px solid white;
 }
 
 .yellowText {
@@ -53,12 +50,10 @@ table {
     width: 85%;
     height: 60%;
     margin: auto;
-    /* margin-top: 25px; */
     margin-bottom: 25px;
     position: relative;
     top: -100px;
     background-color: lightBlue;
-    border: solid 2px black;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
@@ -79,10 +74,6 @@ tr {
     width: 96px;
     height: 96px;
     margin: auto;
-}
-
-#id {
-    width: 100%;
 }
 
 #winModal {
