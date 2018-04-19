@@ -18,7 +18,7 @@ main {
     text-align: center;
 }
 
-.scoreboard {
+#scoreboard {
     width: 85%;
     height: 50px;
     margin: auto;
@@ -37,8 +37,16 @@ main {
     border: 1px solid white;
 }
 
-#moveCounter {
+.yellowText {
     color: yellow;
+}
+
+.grayText {
+    color: gray;
+}
+
+.star {
+    font-size: 2em;
 }
 
 table {

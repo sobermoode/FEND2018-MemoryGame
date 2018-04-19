@@ -13,6 +13,9 @@ let maxMatches = cardNames.length / 2, totalMatches = 0, totalTurns = 0;
 // disable clicks on the table while cards are being reverted
 let cardTableIsInactive = false;
 
+// star rating thresholds
+const twoStars = 11, oneStar = 14, noStars = 17;
+
 // timer
 let didStart = false;
 const minutes = document.getElementById('minutes');
@@ -37,25 +40,23 @@ placeCards(deck);
 const cardTable = document.querySelector('#cardTable');
 cardTable.addEventListener('click', function(event) {
 
-    // do nothing if the user clicks the table while current cards are reverted
-    if (cardTableIsInactive) {
-        return;
-    }
-
     // get the ID (currentBoard[] index) of the cell,
     // if any part of the table besides a card cell is clicked, do nothing
     const targetID = event.target.getAttribute('id');
-    if (!targetID) { return; }
+
+    // do nothing if:
+    // - any part of the table besides a card cell is clicked
+    // - the user clicks the table while current cards are reverted
+    // - the cell is a current selection or already matched
+    if (!targetID || cardTableIsInactive || (currentBoard[targetID] === false)) {
+        return;
+    }
 
     if (firstTurn) {
         firstID = targetID;
     } else {
         secondID = targetID;
     }
-
-    // if cell is inactive, do nothing
-    const isInactive = (currentBoard[targetID] === false);
-    if (isInactive) { return; }
 
     // get the element holding the icon
     const icon = event.target.querySelector('i');
@@ -69,12 +70,12 @@ cardTable.addEventListener('click', function(event) {
 
     if (firstTurn) {    // on first turn, remember the choice
         firstChoice = icon;
-    } else {
+    } else {            // second turn
 
         // start the timer (if not already started)
         if (!didStart) {
             didStart = !didStart;
-            const updateTimer = setInterval(function() {
+            setInterval(function() {
                 seconds.textContent = pad(++elapsedSeconds % 60);
                 minutes.textContent = parseInt(elapsedSeconds / 60);
             }, 1000);
@@ -100,11 +101,36 @@ cardTable.addEventListener('click', function(event) {
     firstTurn = !firstTurn;
 });
 
+// get the panels in the scoreboard
+let [starsPanel, timerPanel, turnsPanel] = document.getElementById('scoreboard').children;
+
+// takes the new number of turns
 function updateTurnCounter(turns) {
-    const counter = document.querySelector('#moveCounter');
-    counter.textContent = totalTurns;
+
+    // set the text of the counter (it's the yellow text) to the turns argument
+    turnsPanel.querySelector('.yellowText').textContent = turns;
+
+    // adjust the star rating as necessary
+    if (totalTurns === twoStars || totalTurns === oneStar || totalTurns === noStars) {
+        loseStar();
+    }
 }
 
+// turns a star gray, indicating a downgraded rating for solving the puzzle
+function loseStar() {
+
+    // get the stars as an array of elements,
+    // select the last star
+    const stars = starsPanel.getElementsByClassName('yellowText');
+    const lastIndex = stars.length - 1;
+    const star = stars[lastIndex];
+
+    // swap a class to turn the star gray
+    star.classList.remove('yellowText');
+    star.classList.add('grayText');
+}
+
+// returns the x,y coordinate of a table cell
 /* NOTE: code promoted from https://stackoverflow.com/questions/2151084/map-a-2d-array-onto-a-1d-array#comment65016851_2151141 */
 function cardTablePositionForCardID(id) {
     let size = cardTable.rows.length;
@@ -114,6 +140,7 @@ function cardTablePositionForCardID(id) {
     return [x, y];
 }
 
+// turns two cards green, indicating a match
 function matchCards() {
     let [x, y] = cardTablePositionForCardID(firstID);
     let cell = cardTable.rows[y].cells[x];
@@ -126,6 +153,8 @@ function matchCards() {
     cell.querySelector('i').style.backgroundColor = 'lightGreen';
 }
 
+// incorrect match; the cards turn red, then back to pink
+// (indicating being hidden, or turned over)
 function revertCards() {
 
     // prevent the card table from performing anything on a click event
@@ -163,6 +192,7 @@ function revertCards() {
     }, 500);
 }
 
+// all cards are matched
 function win() {
 
     // all the cards turn blue as a visual indicator
@@ -178,6 +208,7 @@ function win() {
     modal.style.zIndex = 1;
 }
 
+// randomize the array of card names
 /* NOTE: code promoted from https://stackoverflow.com/a/2450976 */
 function shuffleCards(cards) {
     let currentIndex = cards.length;
@@ -199,6 +230,7 @@ function shuffleCards(cards) {
     return cards;
 }
 
+// use the randomized array to set each cell of the table to an icon
 /* NOTE: use a document fragment here, to avoid tons of reflows and repaints!!! */
 function placeCards(cards) {
     const table = document.getElementById('cardTable');
