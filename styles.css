@@ -95,6 +95,14 @@ tr {
     z-index: 0;
 }
 
+#refresh {
+    width: 50px;
+    top: -90px;
+    position: relative;
+    margin: auto;
+    color: black;
+}
+
 .material-icons.md-24 {
     font-size: 24px;
     margin: auto;

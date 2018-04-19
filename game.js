@@ -23,6 +23,12 @@ const seconds = document.getElementById('seconds');
 let elapsedSeconds = 0;
 let timerFunction;
 
+// refresh button
+const refresh = document.getElementById('refresh');
+refresh.addEventListener('click', function() {
+    location.reload();
+});
+
 /* NOTE: code promoted from https://stackoverflow.com/a/5517836 */
 function pad(val) {
   var valString = val + "";
