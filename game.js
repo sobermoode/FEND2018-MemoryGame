@@ -21,6 +21,7 @@ let didStart = false;
 const minutes = document.getElementById('minutes');
 const seconds = document.getElementById('seconds');
 let elapsedSeconds = 0;
+let timerFunction;
 
 /* NOTE: code promoted from https://stackoverflow.com/a/5517836 */
 function pad(val) {
@@ -75,10 +76,11 @@ cardTable.addEventListener('click', function(event) {
         // start the timer (if not already started)
         if (!didStart) {
             didStart = !didStart;
-            setInterval(function() {
+
+            timerFunction = setInterval(function() {
                 seconds.textContent = pad(++elapsedSeconds % 60);
                 minutes.textContent = parseInt(elapsedSeconds / 60);
-            }, 1000);
+            }, 1000);           // update the elements every second
         }
 
         secondChoice = icon;    // second selection
@@ -206,6 +208,9 @@ function win() {
     // pop up the win modal
     const modal = document.querySelector('#winModal');
     modal.style.zIndex = 1;
+
+    // stop the timer
+    clearInterval(timerFunction);
 }
 
 // randomize the array of card names
