@@ -17,18 +17,18 @@ main {
     text-align: center;
 }
 
-#scoreboard {
+.scoreboard {
     width: 85%;
     height: 50px;
     margin: auto;
     display: flex;
     color: white;
     font-size: 1.5em;
+    background-color: green;
 }
 
 .scorePanel {
     width: 33.33%;
-    height: 50px;
     margin: auto;
     text-align: center;
     background-color: green;
@@ -83,7 +83,6 @@ tr {
     position: relative;
     top: 100px;
     background-color: yellow;
-    z-index: 0;
 }
 
 #refresh {

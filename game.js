@@ -39,6 +39,67 @@ function pad(val) {
   }
 }
 
+// randomize the array of card names
+/* NOTE: code promoted from https://stackoverflow.com/a/2450976 */
+function shuffleCards(cards) {
+    let currentIndex = cards.length;
+    let tempCard, randoIndex;
+
+    // while there remain elements to shuffle...
+    while (currentIndex !== 0) {
+
+        // Pick a remaining element...
+        randoIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        tempCard = cards[currentIndex];
+        cards[currentIndex] = cards[randoIndex];
+        cards[randoIndex] = tempCard;
+    }
+
+    return cards;
+}
+
+// use the randomized array to set each cell of the table to an icon
+/* NOTE: use a document fragment here, to avoid tons of reflows and repaints!!! */
+function placeCards(cards) {
+    const table = document.getElementById('cardTable');
+    const rows = table.rows;
+
+    // for every row...
+    let rowCounter = 0;
+    for (row of rows) {
+        const cells = row.cells;
+
+        // and every cell in that row...
+        for (cell of cells) {
+
+            // ID each cell
+            /* NOTE: code promoted from https://stackoverflow.com/a/2151141 */
+            const cellID = cell.cellIndex + rowCounter * row.cells.length;
+            cell.setAttribute('id', cellID);
+
+            // create the material icon (requires an <i> element)
+            const newI = document.createElement('i');
+            newI.setAttribute('class', 'material-icons md-96');
+            newI.setAttribute('id', cellID);
+
+            // add the card name for retrieval later
+            newI.setAttribute('icon', cards[cellID]);
+
+            newI.style.backgroundColor = 'pink';
+
+            // add the material icon to the cell
+            const cardDiv = cell.querySelector('.card');
+            cardDiv.setAttribute('id', cellID);
+            cardDiv.appendChild(newI);
+        }
+
+        rowCounter++;
+    }
+}
+
 // shuffle the cards and deal out the board
 const deck = shuffleCards(cardNames);
 placeCards(deck);
@@ -110,7 +171,8 @@ cardTable.addEventListener('click', function(event) {
 });
 
 // get the panels in the scoreboard
-let [starsPanel, timerPanel, turnsPanel] = document.getElementById('scoreboard').children;
+let scoreboard = document.querySelector('.scoreboard');
+let [starsPanel, timerPanel, turnsPanel] = scoreboard.children;
 
 // takes the new number of turns
 function updateTurnCounter(turns) {
@@ -211,71 +273,16 @@ function win() {
         }
     }
 
-    // pop up the win modal
-    const modal = document.querySelector('#winModal');
+    // add the current scoreboard to the modal
+    const modal = document.getElementById('winModal');
+    const modalScoreboard = modal.querySelector('#modalScoreboard');
+    modalScoreboard.classList.add('scoreboard');
+    modalScoreboard.innerHTML = scoreboard.innerHTML;
+    modalScoreboard.style.height = '35px';
+
+    // show the modal
     modal.style.zIndex = 1;
 
     // stop the timer
     clearInterval(timerFunction);
-}
-
-// randomize the array of card names
-/* NOTE: code promoted from https://stackoverflow.com/a/2450976 */
-function shuffleCards(cards) {
-    let currentIndex = cards.length;
-    let tempCard, randoIndex;
-
-    // while there remain elements to shuffle...
-    while (currentIndex !== 0) {
-
-        // Pick a remaining element...
-        randoIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        tempCard = cards[currentIndex];
-        cards[currentIndex] = cards[randoIndex];
-        cards[randoIndex] = tempCard;
-    }
-
-    return cards;
-}
-
-// use the randomized array to set each cell of the table to an icon
-/* NOTE: use a document fragment here, to avoid tons of reflows and repaints!!! */
-function placeCards(cards) {
-    const table = document.getElementById('cardTable');
-    const rows = table.rows;
-
-    // for every row...
-    let rowCounter = 0;
-    for (row of rows) {
-        const cells = row.cells;
-
-        // and every cell in that row...
-        for (cell of cells) {
-
-            // ID each cell
-            /* NOTE: code promoted from https://stackoverflow.com/a/2151141 */
-            const cellID = cell.cellIndex + rowCounter * row.cells.length;
-            cell.setAttribute('id', cellID);
-
-            // create the material icon (requires an <i> element)
-            const newI = document.createElement('i');
-            newI.setAttribute('class', 'material-icons md-96');
-            newI.setAttribute('id', cellID);
-
-            // add the card name for retrieval later
-            newI.setAttribute('icon', cards[cellID]);
-
-            newI.style.backgroundColor = 'pink';
-
-            // add the material icon to the cell
-            const cardDiv = cell.querySelector('.card');
-            cardDiv.setAttribute('id', cellID);
-            cardDiv.appendChild(newI);
-        }
-
-        rowCounter++;
-    }
 }
