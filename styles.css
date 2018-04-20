@@ -8,8 +8,8 @@ body, html {
 
 main {
     width: 70%;
-    height: 100%;
     margin: auto;
+    margin-top: 0;
     font-size: 18px;
 }
 
@@ -46,24 +46,28 @@ main {
     font-size: 2em;
 }
 
+#gameContainer {
+    width: 100%;
+}
+
 table {
     width: 85%;
-    height: 60%;
+    height: 100%;
     margin: auto;
-    margin-bottom: 25px;
     position: relative;
     top: -100px;
     background-color: lightBlue;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    border: 2px black solid;
 }
 
 tr {
     display: flex;
-    height: 25%;
 }
 
 .cardCell {
     width: 25%;
+    height: 150px;
     display: flex;
     margin: 7.5px;
     background-color: pink;
