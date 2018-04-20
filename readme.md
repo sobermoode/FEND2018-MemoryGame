@@ -1,6 +1,6 @@
-# FEND2018-Project2
+<h1>FEND2018-Project2</h1>
 
-## Memory game
+<h2>Memory game</h2>
 
 Project 2 for the Udacity FEND nanodegree.
 
