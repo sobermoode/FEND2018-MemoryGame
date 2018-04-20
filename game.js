@@ -5,6 +5,9 @@ const cardNames = ['face', 'face', 'bug_report', 'bug_report', 'motorcycle', 'mo
 // (all active to start)
 let currentBoard = [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true ];
 
+// a 4x4 grid of cards
+const gridSize = 4;
+
 let firstTurn = true;
 let firstID, secondID;
 let firstChoice, secondChoice;
@@ -61,24 +64,33 @@ function shuffleCards(cards) {
     return cards;
 }
 
+/*
+    NOTE: In some research, I didn't see that document.createElement
+    causes a reflow/repaint. I originally had the thought of using a
+    document fragment here, but if there are no reflow/repaints, then
+    it shouldn't be necessary?
+*/
 // use the randomized array to set each cell of the table to an icon
-/* NOTE: use a document fragment here, to avoid tons of reflows and repaints!!! */
 function placeCards(cards) {
-    const table = document.getElementById('cardTable');
-    const rows = table.rows;
 
-    // for every row...
-    let rowCounter = 0;
-    for (row of rows) {
-        const cells = row.cells;
+    // create a table element, give it an ID
+    const cardTable = document.createElement('table');
+    cardTable.setAttribute('id', 'cardTable');
 
-        // and every cell in that row...
-        for (cell of cells) {
+    // for every row in the table...
+    for (let row = 0; row < gridSize; row++) {
 
-            // ID each cell
-            /* NOTE: code promoted from https://stackoverflow.com/a/2151141 */
-            const cellID = cell.cellIndex + rowCounter * row.cells.length;
-            cell.setAttribute('id', cellID);
+        // create a new row element
+        const newRow = document.createElement('tr');
+
+        // ... and for every column (table cell)
+        for (let col = 0; col < gridSize; col++) {
+
+            // create a new <td>, set its ID and class
+            const newTD = document.createElement('td');
+            const cellID = col + row * gridSize;
+            newTD.setAttribute('id', cellID);
+            newTD.classList.add('cardCell');
 
             // create the material icon (requires an <i> element)
             const newI = document.createElement('i');
@@ -90,86 +102,31 @@ function placeCards(cards) {
 
             newI.style.backgroundColor = 'pink';
 
-            // add the material icon to the cell
-            const cardDiv = cell.querySelector('.card');
+            // place the card icon into its space
+            const cardDiv = document.createElement('div');
+            cardDiv.classList.add('card');
             cardDiv.setAttribute('id', cellID);
             cardDiv.appendChild(newI);
+
+            // add the card icon to the table cell
+            newTD.appendChild(cardDiv);
+
+            // add the table cell to the current row
+            newRow.appendChild(newTD);
         }
 
-        rowCounter++;
+        // add the complete row to the card table
+        cardTable.appendChild(newRow);
     }
+
+    // add one element only to an existing element on the page
+    const gameContainer = document.getElementById('gameContainer');
+    gameContainer.appendChild(cardTable);
 }
 
 // shuffle the cards and deal out the board
 const deck = shuffleCards(cardNames);
 placeCards(deck);
-
-// one event handler for the whole table
-const cardTable = document.querySelector('#cardTable');
-cardTable.addEventListener('click', function(event) {
-
-    // get the ID (currentBoard[] index) of the cell,
-    // if any part of the table besides a card cell is clicked, do nothing
-    const targetID = event.target.getAttribute('id');
-
-    // do nothing if:
-    // - any part of the table besides a card cell is clicked
-    // - the user clicks the table while current cards are reverted
-    // - the cell is a current selection or already matched
-    if (!targetID || cardTableIsInactive || (currentBoard[targetID] === false)) {
-        return;
-    }
-
-    // remember the selected cards
-    if (firstTurn) {
-        firstID = targetID;
-    } else {
-        secondID = targetID;
-    }
-
-    // get the element holding the icon
-    const icon = event.target.querySelector('i');
-
-    // make the icon appear by setting the textContent of it's
-    // <i> element to the icon name (in attribute 'icon').
-    icon.textContent = icon.getAttribute('icon');
-
-    // this table cell is now inactive
-    currentBoard[targetID] = false;
-
-    if (firstTurn) {    // on first turn, remember the choice
-        firstChoice = icon;
-    } else {            // second turn
-
-        // start the timer (if not already started)
-        if (!didStart) {
-            didStart = !didStart;
-
-            timerFunction = setInterval(function() {
-                seconds.textContent = pad(++elapsedSeconds % 60);
-                minutes.textContent = parseInt(elapsedSeconds / 60);
-            }, 1000);           // update the elements every second
-        }
-
-        secondChoice = icon;    // second selection
-
-        // +1 turn
-        updateTurnCounter(++totalTurns);
-
-        if (firstChoice.getAttribute('icon') === icon.getAttribute('icon')) {
-            matchCards();       // match!!!
-
-            if (++totalMatches === maxMatches) {    // WINNER!!!
-                setTimeout(win(), 500);
-            }
-        } else {
-            revertCards();      // nope...
-        }
-    }
-
-    // back to the first selection of the next turn
-    firstTurn = !firstTurn;
-});
 
 // get the panels in the scoreboard
 let scoreboard = document.querySelector('.scoreboard');
@@ -288,4 +245,80 @@ function win() {
 
     // stop the timer
     clearInterval(timerFunction);
+}
+
+// get the game table and add the event listener after the page loads
+window.addEventListener('load', function() {
+    tableSetup();
+});
+
+function tableSetup() {
+
+    // one event handler for the whole table
+    const cardTable = document.getElementById('cardTable');
+    cardTable.addEventListener('click', function(event) {
+
+        // get the ID (currentBoard[] index) of the cell,
+        // if any part of the table besides a card cell is clicked, do nothing
+        const targetID = event.target.getAttribute('id');
+
+        // do nothing if:
+        // - any part of the table besides a card cell is clicked
+        // - the user clicks the table while current cards are reverted
+        // - the cell is a current selection or already matched
+        const cellIsInactive = (currentBoard[targetID] === false);
+        if (!targetID || cardTableIsInactive || cellIsInactive) {
+            return;
+        }
+
+        // remember the selected cards
+        if (firstTurn) {
+            firstID = targetID;
+        } else {
+            secondID = targetID;
+        }
+
+        // get the element holding the icon
+        const icon = event.target.querySelector('i');
+
+        // make the icon appear by setting the textContent of it's
+        // <i> element to the icon name (in attribute 'icon').
+        icon.textContent = icon.getAttribute('icon');
+
+        // this table cell is now inactive
+        currentBoard[targetID] = false;
+
+        if (firstTurn) {    // on first turn, remember the choice
+            firstChoice = icon;
+        } else {            // second turn
+
+            // start the timer (if not already started)
+            if (!didStart) {
+                didStart = !didStart;
+
+                timerFunction = setInterval(function() {
+                    seconds.textContent = pad(++elapsedSeconds % 60);
+                    minutes.textContent = parseInt(elapsedSeconds / 60);
+                }, 1000);           // update the elements every second
+            }
+
+            secondChoice = icon;    // second selection
+
+            // +1 turn
+            updateTurnCounter(++totalTurns);
+
+            if (firstChoice.getAttribute('icon') === icon.getAttribute('icon')) {
+                matchCards();       // match!!!
+
+                if (++totalMatches === maxMatches) {    // WINNER!!!
+                    setTimeout(win(), 500);
+                }
+            } else {
+                revertCards();      // nope...
+            }
+        }
+
+        // back to the first selection of the next turn
+        firstTurn = !firstTurn;
+    });
 }
