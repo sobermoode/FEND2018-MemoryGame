@@ -97,6 +97,8 @@ tr {
     color: black;
 }
 
+/* Google material icons */
+/* (I experimented with sizes and text decorations) */
 .material-icons.md-24 {
     font-size: 24px;
     margin: auto;

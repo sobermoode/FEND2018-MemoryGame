@@ -120,6 +120,7 @@ cardTable.addEventListener('click', function(event) {
         return;
     }
 
+    // remember the selected cards
     if (firstTurn) {
         firstID = targetID;
     } else {
@@ -230,6 +231,7 @@ function revertCards() {
     // prevent the card table from performing anything on a click event
     cardTableIsInactive = true;
 
+    // find the selected cards in the table
     let [x, y] = cardTablePositionForCardID(firstID);
     let cell = cardTable.rows[y].cells[x];
     cell.style.backgroundColor = 'red';
@@ -240,6 +242,7 @@ function revertCards() {
     cell.style.backgroundColor = 'red';
     cell.querySelector('i').style.backgroundColor = 'red';
 
+    // revert the cards after .5 secs
     setTimeout(function() {
         firstChoice.textContent = '';
         currentBoard[firstID] = true;
