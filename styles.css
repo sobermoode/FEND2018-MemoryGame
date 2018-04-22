@@ -15,7 +15,6 @@ main {
 
 .centeredText {
     text-align: center;
-    border: 2px solid black;
 }
 
 .scoreboard {
@@ -56,7 +55,7 @@ table {
     height: 100%;
     margin: auto;
     position: relative;
-    top: -200px;
+    top: -135px;
     background-color: lightBlue;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
     border: 2px black solid;
@@ -83,7 +82,6 @@ tr {
 
 #winModal {
     width: 85%;
-    /* height: 125px; */
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -92,23 +90,9 @@ tr {
     background-color: yellow;
 }
 
-/* #winModal * {
-    width: 250px;
-    height: 33.33%;
-    margin: auto;
-    background-color: green;
-    color: red;
-} */
-
-
-/* #modalScoreboard {
-    height: 35px;
-    border: 2px black solid;
-} */
-
 #refresh {
     width: 50px;
-    top: -90px;
+    top: -125px;
     position: relative;
     margin: auto;
     color: black;
