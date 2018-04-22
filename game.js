@@ -17,7 +17,7 @@ let maxMatches = cardNames.length / 2, totalMatches = 0, totalTurns = 0;
 let cardTableIsInactive = false;
 
 // star rating thresholds
-const twoStars = 11, oneStar = 14, noStars = 17;
+const twoStars = 11, oneStar = 14;
 
 // timer
 let didStart = false;
@@ -139,7 +139,7 @@ function updateTurnCounter(turns) {
     turnsPanel.querySelector('.yellowText').textContent = turns;
 
     // adjust the star rating as necessary
-    if (totalTurns === twoStars || totalTurns === oneStar || totalTurns === noStars) {
+    if (totalTurns === twoStars || totalTurns === oneStar) {
         loseStar();
     }
 }
@@ -251,7 +251,6 @@ function win() {
 window.addEventListener('load', function() {
     tableSetup();
     const modal = document.getElementById('winModal');
-    //modal.style.zIndex = 1;
 });
 
 function tableSetup() {
