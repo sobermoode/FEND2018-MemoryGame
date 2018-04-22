@@ -250,6 +250,8 @@ function win() {
 // get the game table and add the event listener after the page loads
 window.addEventListener('load', function() {
     tableSetup();
+    const modal = document.getElementById('winModal');
+    //modal.style.zIndex = 1;
 });
 
 function tableSetup() {
