@@ -26,9 +26,13 @@ const seconds = document.getElementById('seconds');
 let elapsedSeconds = 0;
 let timerFunction;
 
-// refresh button
+// refresh buttons
 const refresh = document.getElementById('refresh');
 refresh.addEventListener('click', function() {
+    location.reload();
+});
+const modalRefresh = document.getElementById('modalRefresh');
+modalRefresh.addEventListener('click', function() {
     location.reload();
 });
 
