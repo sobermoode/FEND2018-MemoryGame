@@ -12,3 +12,6 @@ Above the card table is the scoreboard. You have a star rating, a timer, and a m
 More moves means less stars. Try to earn three stars!!!
 
 There's a refresh button at the bottom, if necessary.
+
+Uses [https://material.io/icons/][materalio] for awesomeness!!!
+[materalio]: https://material.io/icons/ "Google's Material icons"
